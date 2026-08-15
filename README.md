@@ -140,9 +140,9 @@ Upon downloading datasets on real estate properties sourced from CRMLS (Californ
 
 | Model | Test R² |
 | -------- | -------- |
-| Linear Regression | 0.761132  |
-| Decision Tree  | 0.710998  |
-| Random Forest  | 0.836335  |
+| Linear Regression | 0.799203  |
+| Decision Tree  | 0.744029  |
+| Random Forest  | 0.865858  |
 | Baseline XGBoost  | 0.868322  |
 | Tuned XGBoost  | 0.872436  |
 
