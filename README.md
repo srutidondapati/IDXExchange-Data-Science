@@ -180,3 +180,29 @@ Upon downloading datasets on real estate properties sourced from CRMLS (Californ
     - High variance and instability across the price bands (25.51% in under $500k vs 21.14% in over $1M)
 4. Linear Regression:
     - Poor performance across price bands with high MAPE (44.91%) and MdAPE (35.40%) scores
+  
+---
+
+### Week 9:
+*Goals*
+- Build a Streamlit app: user inputs LivingArea, Beds, Baths, LotSize → output predicted price. 
+- Load trained model with joblib/pickle.
+
+*Results*
+Built a Streamlit prediction app (`app.py`) using the tuned XGBoost model loaded in with joblib. The app takes user inputs and engineers features automatically (PropertyAge, BedBathRatio) before running the model.
+
+- To run app use command `streamlit run app.py` in terminal
+
+#### Test Cases from April 2026 Test Dataset:
+
+| | Test Case 1 | Test Case 2 | Test Case 3 |
+|---|---|---|---|
+| **Tier** | Under $500K | $500K–$1M | Over $1M |
+| **Address** | 24860 4th, San Bernardino | 2089 Palm Beach Way, San Jose | 35 Malibu, Laguna Niguel |
+| **Living Area** | 456 sq ft | 1,020 sq ft | 2,629 sq ft |
+| **Beds / Baths** | 1 / 1 | 3 / 2 | 4 / 3 |
+| **Lot Size** | 11,000 sq ft | 5,200 sq ft | 9,100 sq ft |
+| **Year Built** | 1930 | 1960 | 1987 |
+| **ZIP Code** | 92410 | 95122 | 92677 |
+| **Actual Price** | $245,000 | $851,000 | $2,250,000 |
+| **Predicted Price** | $276,695 | $$851,047 | $2,144,243 |
