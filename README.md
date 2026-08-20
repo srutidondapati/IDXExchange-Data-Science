@@ -53,8 +53,8 @@ Upon downloading datasets on real estate properties sourced from CRMLS (Californ
     - encoded as median price features computed on training data: zip_median_price, city_median_price
 
 - #### Train/Test Split:
-    - Training set contains data from September 2025 - March 2026
-    - Test set contains data from April 2026
+    - Training: November 2025 – May 2026
+    - Test: June 2026
     - Final Features (X): LivingArea, BedroomsTotal, BathroomsTotalInteger, 
       LotSizeSquareFeet, zip_median_price, city_median_price
     - Target (y): ClosePrice
