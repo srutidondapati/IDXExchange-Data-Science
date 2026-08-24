@@ -11,25 +11,15 @@ The final model is a tuned XGBoost regressor, which achieved a test R² of 0.872
 
 ## Dataset Source
 
-The dataset consists of approximately six months of real estate property data sourced from CRMLS (California Regional Multiple Listing Service).
+- The dataset consists of approximately six months of real estate property data sourced from CRMLS (California Regional Multiple Listing Service).
 
-The project focuses on:
-- PropertyType = Residential
-- PropertySubType = SingleFamilyResidence
+- *Target Variable*: ClosePrice — the final sale price of the property
 
-The target variable is:
-- ClosePrice — the final sale price of the property
-
-Important original features include:
-- LivingArea
-- BedroomsTotal
-- BathroomsTotalInteger
-- LotSizeSquareFeet
-- YearBuilt
-- PostalCode
-- City
-- UnifiedSchoolDistrict
-
+- **Train/Test Strategy:** Used a chronological split rather than a random split:
+  - **Training:** November 2025 – May 2026
+  - **Testing:** June 2026
+  - This approach simulates using historical sales data to predict future property prices.
+    
 ---
 
 ## Data Preprocessing
@@ -48,17 +38,24 @@ The preprocessing workflow was performed before training the machine learning mo
        - ClosePrice: kept between $50K and $10M
        - LivingArea: kept between 300 and 15,000 sq ft
 
-- #### Geographic Features: (PostalCode and City)
-    - ZIP code median prices range from $75K to $9M
-    - City median prices range from $75K to $6.9M
-    - encoded as median price features computed on training data: zip_median_price, city_median_price
- 
-- #### Train/Test Split:
-    - Training: November 2025 – May 2026
-    - Test: June 2026
-    - Final Features (X): LivingArea, BedroomsTotal, BathroomsTotalInteger, 
-      LotSizeSquareFeet, zip_median_price, city_median_price
-    - Target (y): ClosePrice
+- #### Feature Engineering & Geographic Layer:
+    - **Geographic Indicators:** Created median sale-price features for ZIP codes, cities, and Unified School Districts:
+        - `zip_median_price`
+        - `city_median_price`
+        - `district_median_price`
+      - **Domain Indicators:** Created `bed_bath_ratio` to represent the relationship between bedrooms and bathrooms and `property_age` to represent the age of the property.
+      - Geographic median prices were calculated using training data to prevent test-set information from leaking into the model.
+
+#### Final Features
+    - `LivingArea`
+    - `BedroomsTotal`
+    - `BathroomsTotalInteger`
+    - `LotSizeSquareFeet`
+    - `zip_median_price`
+    - `city_median_price`
+    - `district_median_price`
+    - `bed_bath_ratio`
+    - `property_age`.
 
 ---
 
@@ -83,18 +80,6 @@ The preprocessing workflow was performed before training the machine learning mo
         - n_estimators = 300
         - learning_rate = 0.10
         - max_depth = 9
-
----
-
-## Feature Engineering
-
-#### Old Features
-- `LivingArea`, `BedroomsTotal`, `BathroomsTotalInteger`, `LotSizeSquareFeet`, `zip_median_price`, `city_median_price`
-
-#### New Features
-- `property_age`: years since property was built (2026 - YearBuilt)
-- `bed_bath_ratio`: bedrooms divided by bathrooms
-- `district_median_price`: median ClosePrice per Unified School District
 
 ---
 
