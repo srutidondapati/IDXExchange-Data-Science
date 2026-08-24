@@ -163,23 +163,34 @@ Upon downloading datasets on real estate properties sourced from CRMLS (Californ
 
 | Price Band | Count | RF MAPE% | DT MAPE% | LR MAPE% | XGB MAPE% | RF MdAPE% | DT MdAPE% | LR MdAPE% | XGB MdAPE% |
 | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
-| Under $500k | 1809 | 20.62 | 25.51 | 44.91 | 20.62 | 9.22 | 12.68 | 35.40 | 9.64 |
-| $500k-$1M | 5327 | 11.05 | 14.79 | 23.82 | 10.64 | 6.85 | 8.97 | 18.68 | 6.98 |
-| Over $1M | 5648 | 14.83 | 21.14 | 18.70 | 14.23 | 11.16 | 15.43 | 14.42 | 10.57 |
+| Under $500k | 1809 | 20.62 | 24.95 | 44.91 | 20.62 | 9.22 | 12.63 | 35.40 | 9.64 |
+| $500k-$1M | 5327 | 11.05 | 14.73 | 23.82 | 10.64 | 6.85 | 9.15 | 18.68 | 6.98 |
+| $1M-$2M | 3946 | 13.55 | 19.52 | 18.19 | 12.92 | 9.94 | 13.98 | 13.48 | 9.52 |
+| Over $2M | 1702 | 17.77 | 24.71 | 19.88 | 17.27 | 14.46 | 20.00 | 16.69 | 13.76 |
 
 
-- $500k-$1M price band had the lowest prediction errors
-- Homes under $500k and $1M had higher errors, meaning these properties were more difficult for the models to predict
-- XGBoost had the lowest MAPE for the $500k–$1M and over-$1M bands; while Random Forest had a slightly lower MdAPE for the under-$500k band
+- **$500K–$1M** had the lowest prediction errors across all models
+- Error increases at both extremes — under $500K due to fewer 
+  training examples, over $2M due to unique luxury features 
+  not captured in MLS data
+- XGBoost consistently had the lowest MAPE across all price bands;
+  Random Forest had a slightly lower MdAPE in the under $500K band
 
-1. XGBoost:
-    - Best performance with 10.64% MAPE and 6.98% MdAPE for the $500k - $1M band
-2. Random Forest:
-    - Slightly better in the lowest price band with MdAPE of 9.22% compared to XGBoost 9.64%
-3. Decision Tree:
-    - High variance and instability across the price bands (25.51% in under $500k vs 21.14% in over $1M)
-4. Linear Regression:
-    - Poor performance across price bands with high MAPE (44.91%) and MdAPE (35.40%) scores
+1. **XGBoost** — Best overall
+    - Lowest MAPE (10.64%) and MdAPE (6.98%) in the $500K–$1M band
+    - Most consistent performance across all price tiers
+
+2. **Random Forest** — Close second
+    - Slightly better MdAPE in the under $500K band 
+      (9.22% vs XGBoost 9.64%)
+
+3. **Decision Tree** — High variance
+    - Most unstable across price bands 
+      (MAPE ranges from 14.73% to 24.95%)
+
+4. **Linear Regression** — Weakest overall
+    - Struggles most under $500K (MAPE: 44.91%, MdAPE: 35.40%)
+    - Becomes more competitive above $1M
   
 ---
 
