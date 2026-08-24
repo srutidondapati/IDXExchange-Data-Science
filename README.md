@@ -5,8 +5,6 @@ The IDXExchange project uses machine learning models to predict ClosePrice, the 
 
 The project uses real estate property data sourced from the California Regional Multiple Listing Service (CRMLS). The workflow includes data exploration, preprocessing, feature engineering, geographic price features, model comparison, advanced modeling, evaluation across different price ranges, and a Streamlit prediction application.
 
-The final model is a tuned XGBoost regressor, which achieved a test R² of 0.872436.
-
 ---
 
 ## Dataset Source
