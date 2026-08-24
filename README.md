@@ -100,8 +100,8 @@ The preprocessing workflow was performed before training the machine learning mo
 ## Evaluation by Price Band
 
 In addition to R², the models were evaluated using:
-    - MAPE (Mean Absolute Percentage Error)
-    - MdAPE (Median Absolute Percentage Error)
+  - MAPE (Mean Absolute Percentage Error)
+  - MdAPE (Median Absolute Percentage Error)
 
 | Price Band | Count | RF MAPE% | DT MAPE% | LR MAPE% | XGB MAPE% | RF MdAPE% | DT MdAPE% | LR MdAPE% | XGB MdAPE% |
 | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
@@ -110,7 +110,7 @@ In addition to R², the models were evaluated using:
 | $1M-$2M | 3946 | 13.55 | 19.52 | 18.19 | 12.92 | 9.94 | 13.98 | 13.48 | 9.52 |
 | Over $2M | 1702 | 17.77 | 24.71 | 19.88 | 17.27 | 14.46 | 20.00 | 16.69 | 13.76 |
 
-*Overall Model Ranking*
+**Overall Model Ranking**
 1. XGBoost — Best overall performance
 2. Random Forest — Close second
 3. Decision Tree — Higher variance and less stable performance
