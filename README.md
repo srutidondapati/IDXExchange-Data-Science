@@ -92,8 +92,8 @@ The preprocessing workflow was performed before training the machine learning mo
 | Tuned XGBoost  | 0.872436  |
 
 *Best Model* : Tuned XGBoost
-    - Test R² : 0.872436
-    - Improvement over baseline XGBoost: 0.004114
+  - Test R² : 0.872436
+  - Improvement over baseline XGBoost: 0.004114
 
 ---
 
