@@ -11,7 +11,7 @@ The project uses real estate property data sourced from the California Regional 
 
 - The dataset consists of approximately six months of real estate property data sourced from CRMLS (California Regional Multiple Listing Service).
 
-- *Target Variable*: ClosePrice — the final sale price of the property
+- **Target Variable**: ClosePrice — the final sale price of the property
 
 - **Train/Test Strategy:** Used a chronological split rather than a random split:
   - **Training:** November 2025 – May 2026
