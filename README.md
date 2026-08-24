@@ -145,10 +145,10 @@ Streamlit will provide a local URL where the prediction application can be opene
 ## How to Run the Project
 
 1. Clone the Repository
-- Clone the project repository and navigate to the project directory.
+  - Clone the project repository and navigate to the project directory.
 
 2. Install Dependencies
-- Install the Python libraries used by the project:
+  - Install the Python libraries used by the project:
 
 `pip install pandas numpy scikit-learn xgboost joblib streamlit jupyter`
 
@@ -156,12 +156,12 @@ Streamlit will provide a local URL where the prediction application can be opene
 
 The notebooks should be completed in the following order:
 
-01_exploration.ipynb
-02_preprocessing.ipynb
-03_baseline_model.ipynb
-04_model_comparison.ipynb
-05_advanced_models.ipynb
-06_evaluation.ipynb
+1. 01_exploration.ipynb
+2. 02_preprocessing.ipynb
+3. 03_baseline_model.ipynb
+4. 04_model_comparison.ipynb
+5. 05_advanced_models.ipynb
+6. 06_evaluation.ipynb
 
 The notebooks progress from data exploration and preprocessing through model training, comparison, advanced modeling, and final evaluation.
 
