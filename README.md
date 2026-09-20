@@ -1,40 +1,29 @@
 # IDXExchange Project
 
-## Objectives:
-Upon downloading datasets on real estate properties sourced from CRMLS (California Regional Multiple Listing Service), the goal is to build and train a machine learning model to predict ClosePrice, the price of any single residential property in California.
+## Project Overview:
+The IDXExchange project uses machine learning models to predict ClosePrice, the sale price of a single residential property in California.
 
-## Weekly Milestones & Progress
-
-### Week 1:
-*Goals*
-- Download atleast 6 months of raw CSV data from CRMLS
-- Review MetaData to understand important data features and key columns
+The project uses real estate property data sourced from the California Regional Multiple Listing Service (CRMLS). The workflow includes data exploration, preprocessing, feature engineering, geographic price features, model comparison, advanced modeling, evaluation across different price ranges, and a Streamlit prediction application.
 
 ---
 
-### Week 2:
-*Goals*
-- Load 6 months of dataset into jupyter notebook using pandas
-- Explore the distributions of key columns: ClosePrice, LivingArea, Bedrooms, Bathrooms, LotSize
-- Restrict to PropertyType = Residential and PropertySubType = SingleFamilyResidence
+## Dataset Source
 
-*Results*
-- Close Price: most houses are sold between $750k to $900k, with outliers existing above $3M
-- Living Area: most houses have around 1,500 to 2,000 square footage of living area
-- Bedrooms: most houses have 3-4 bedrooms
-- Bathrooms: most houses have 2-3 bathrooms
-- Lot Size: most houses have a lot size of around 10k to 15k square footage
+- The dataset consists of approximately six months of real estate property data sourced from CRMLS (California Regional Multiple Listing Service).
 
+- **Target Variable**: ClosePrice — the final sale price of the property
+
+- **Train/Test Strategy:** Used a chronological split rather than a random split:
+  - **Training:** November 2025 – May 2026
+  - **Testing:** June 2026
+  - This approach simulates using historical sales data to predict future property prices.
+    
 ---
 
-### Week 3:
-*Goals*
-- Handle missing values (decide whether to drop, impute, or flag).
-- Convert categorical fields to numeric (encoding).
-- Normalize numerical features if needed.
-- Create train/test split
+## Data Preprocessing
 
-*Results*
+The preprocessing workflow was performed before training the machine learning models.
+
 - #### Handling Missing Values:
     - ClosePrice: 0 nulls, no handling necessary
     - LivingArea: 35 nulls, dropped rows (since it is required for model)
@@ -46,97 +35,53 @@ Upon downloading datasets on real estate properties sourced from CRMLS (Californ
      - Removed large/unrealistic values using the findings from Week 2 data exploration
        - ClosePrice: kept between $50K and $10M
        - LivingArea: kept between 300 and 15,000 sq ft
-         
-- #### Observed that PostalCode and City had strong influence on ClosePrice:
-    - ZIP code median prices range from $75K to $9M
-    - City median prices range from $75K to $6.9M
-    - encoded as median price features computed on training data: zip_median_price, city_median_price
 
-- #### Train/Test Split:
-    - Training: November 2025 – May 2026
-    - Test: June 2026
-    - Final Features (X): LivingArea, BedroomsTotal, BathroomsTotalInteger, 
-      LotSizeSquareFeet, zip_median_price, city_median_price
-    - Target (y): ClosePrice
+- #### Feature Engineering & Geographic Layer:
+    - **Geographic Indicators:** Created median sale-price features for ZIP codes, cities, and Unified School Districts:
+        - `zip_median_price`
+        - `city_median_price`
+        - `district_median_price`
+      - **Domain Indicators:** Created `bed_bath_ratio` to represent the relationship between bedrooms and bathrooms and `property_age` to represent the age of the property.
+      - Geographic median prices were calculated using training data to prevent test-set information from leaking into the model.
 
----
-
-### Week 4:
-*Goals*
-- Train a Linear Regression as the first model. 
-- Evaluate using R² on the test set. 
-- Record baseline results. 
-
-*Results*
-- Linear Regression Results: 
-    - Training R²: 0.7778
-    - Test R²: 0.7611
- 
-- The model had an R² score of 0.7611 on the test set, indicating that it explains approximately 76% of the variation in home sale prices. Both R² results are similar to each other with a difference of 0.0167 representing that the model is generalizing well without overfitting.
+#### Final Features
+    - `LivingArea`
+    - `BedroomsTotal`
+    - `BathroomsTotalInteger`
+    - `LotSizeSquareFeet`
+    - `zip_median_price`
+    - `city_median_price`
+    - `district_median_price`
+    - `bed_bath_ratio`
+    - `property_age`.
 
 ---
 
-### Week 5:
-*Goals*
-- Try Decision Tree and Random Forest regressors. 
-- Compare their test R² against baseline.
-- Document model behavior (strengths/weaknesses). 
+## Models Tested
 
-*Results*
-- *Best Performing Model* - Random Forest Model
-    - Builds multiple trees on various data subsets and features rather than memorizing patterns
+- ### Linear Regression
+    - Linear Regression was used as the baseline model because it is simple, fast, and provides an initial benchmark.
 
-- *Most Stable Model* - Linear Regression Model
+- ### Decision Tree
+    - Decision Tree regression was tested to capture nonlinear relationships between property features and sale price.
 
-- *Weaker Generalization Model* - Decision Tree Model:
-    - Memorizes patterns on training data which doesn't generalize well to the test data
+- ### Random Forest
+    - Random Forest combines multiple decision trees to improve generalization and reduce the instability of a single decision tree.
 
-| Model | Train R² | Test R² | R² Difference | Strengths | Weaknesses |
-| -------- | -------- | -------- | -------- | -------- | -------- |
-| Random Forest Regressor | 0.978122  | 0.836335  | 0.141787  | Highest accuracy, captures complex relationships  | Slower training, harder to interpret  |
-| Linear Regression  | 0.777826  | 0.761132  | 0.016694  | Stable, simple and fast  | Struggles to capture nonlinear patterns  |
-| Decision Tree Regressor  | 0.998748  | 0.710998  | 0.28775  | Captures nonlinear patterns  | Overfits easily, unstable  |
+- ### XGBoost
+    - XGBoost was tested as an advanced gradient boosting model. A tuned version was created by adjusting:
+        - n_estimators
+        - learning_rate
+        - max_depth
+
+    - The best-performing hyperparameters were:
+        - n_estimators = 300
+        - learning_rate = 0.10
+        - max_depth = 9
 
 ---
 
-### Week 6:
-*Goals*
-- Add more sample features you can engineer: bed/bath ratio, age of property in years 
-- Add more detailed geographic layer using school districts
-- Re-train models with the updated feature set. 
-
-*Results*
-
-| Model | Old Test R² | New Test R² | Improvement |
-| -------- | -------- | -------- | -------- |
-| Random Forest Regressor | 0.836335  | 0.865858  | 0.029523  |
-| Linear Regression  | 0.761132  | 0.799203  | 0.038071  |
-| Decision Tree Regressor  | 0.710998  | 0.744029  | 0.033031  |
-
-##### Old Features
-- `LivingArea`, `BedroomsTotal`, `BathroomsTotalInteger`, `LotSizeSquareFeet`, `zip_median_price`, `city_median_price`
-
-##### New Features
-- `property_age`: years since property was built (2026 - YearBuilt)
-- `bed_bath_ratio`: bedrooms divided by bathrooms
-- `district_median_price`: median ClosePrice per Unified School District
-
-##### Conclusion
-
-- All the models had improvement with the new feature set
-    - Most Improvement: Linear Regression had the largest improvement of 0.038
-    - Top Performing Model: Random Forest had the best Test R² score of 0.865858
-- Creating the school district spatial layer (`district_median_price`) provided a tighter price baseline than ZIP codes and city medians alone, improving test accuracy across the models.
-- Adding features like `bed_bath_ratio` and `property_age` helped models account for property condition and layout efficiency increasing model accuracy.
-  
----
-
-### Week 7:
-*Goals*
-- Try Gradient Boosting (e.g., XGBoost or LightGBM).
-- Perform light hyperparameter tuning (depth, learning rate, n_estimators). 
-
-*Results*
+## Model Results
 
 | Model | Test R² |
 | -------- | -------- |
@@ -146,63 +91,77 @@ Upon downloading datasets on real estate properties sourced from CRMLS (Californ
 | Baseline XGBoost  | 0.868322  |
 | Tuned XGBoost  | 0.872436  |
 
-- Baseline XGBoost Test R² : 0.868322
-- Tuned XGBoost Test R² : 0.872436
-    - Best hyperparameters: `n_estimators=300`, `learning_rate=0.10`, and `max_depth=9`
-        - Larger max_depth allows the model to capture complex relationships
-    - Increase of 0.004114 over baseline XGBoost
-  
+*Best Model* : Tuned XGBoost
+  - Test R² : 0.872436
+  - Improvement over baseline XGBoost: 0.004114
+
 ---
 
-### Week 8:
-*Goals*
-- Compute metrics beyond R²: MAPE and MdAPE.
-- Summarize insights (e.g., which price bands perform better). 
+## Evaluation by Price Band
 
-*Results*
+In addition to R², the models were evaluated using:
+  - MAPE (Mean Absolute Percentage Error)
+  - MdAPE (Median Absolute Percentage Error)
 
 | Price Band | Count | RF MAPE% | DT MAPE% | LR MAPE% | XGB MAPE% | RF MdAPE% | DT MdAPE% | LR MdAPE% | XGB MdAPE% |
 | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
-| Under $500k | 1809 | 20.62 | 25.51 | 44.91 | 20.62 | 9.22 | 12.68 | 35.40 | 9.64 |
-| $500k-$1M | 5327 | 11.05 | 14.79 | 23.82 | 10.64 | 6.85 | 8.97 | 18.68 | 6.98 |
-| Over $1M | 5648 | 14.83 | 21.14 | 18.70 | 14.23 | 11.16 | 15.43 | 14.42 | 10.57 |
+| Under $500k | 1809 | 20.62 | 24.95 | 44.91 | 20.62 | 9.22 | 12.63 | 35.40 | 9.64 |
+| $500k-$1M | 5327 | 11.05 | 14.73 | 23.82 | 10.64 | 6.85 | 9.15 | 18.68 | 6.98 |
+| $1M-$2M | 3946 | 13.55 | 19.52 | 18.19 | 12.92 | 9.94 | 13.98 | 13.48 | 9.52 |
+| Over $2M | 1702 | 17.77 | 24.71 | 19.88 | 17.27 | 14.46 | 20.00 | 16.69 | 13.76 |
 
+**Overall Model Ranking**
+1. XGBoost — Best overall performance
+2. Random Forest — Close second
+3. Decision Tree — Higher variance and less stable performance
+4. Linear Regression — Weakest overall performance
 
-- $500k-$1M price band had the lowest prediction errors
-- Homes under $500k and $1M had higher errors, meaning these properties were more difficult for the models to predict
-- XGBoost had the lowest MAPE for the $500k–$1M and over-$1M bands; while Random Forest had a slightly lower MdAPE for the under-$500k band
+The $500K–$1M price band had the lowest prediction errors across all models and metrics.
 
-1. XGBoost:
-    - Best performance with 10.64% MAPE and 6.98% MdAPE for the $500k - $1M band
-2. Random Forest:
-    - Slightly better in the lowest price band with MdAPE of 9.22% compared to XGBoost 9.64%
-3. Decision Tree:
-    - High variance and instability across the price bands (25.51% in under $500k vs 21.14% in over $1M)
-4. Linear Regression:
-    - Poor performance across price bands with high MAPE (44.91%) and MdAPE (35.40%) scores
-  
 ---
 
-### Week 9:
-*Goals*
-- Build a Streamlit app: user inputs LivingArea, Beds, Baths, LotSize → output predicted price. 
-- Load trained model with joblib/pickle.
+## Streamlit Prediction App
 
-*Results*
-Built a Streamlit prediction app (`app.py`) using the tuned XGBoost model loaded in with joblib. The app takes user inputs and engineers features automatically (PropertyAge, BedBathRatio) before running the model.
+A Streamlit application was created to allow users to enter property information and receive a predicted sale price.
 
-- To run app use command `streamlit run app.py` in terminal
+The application accepts property information such as:
+- Living area
+- Bedrooms
+- Bathrooms
+- Lot size
+- Year built
+- ZIP code
 
-#### Test Cases from April 2026 Test Dataset:
+### Launch the Streamlit App
 
-| | Test Case 1 | Test Case 2 | Test Case 3 |
-|---|---|---|---|
-| **Tier** | Under $500K | $500K–$1M | Over $1M |
-| **Address** | 24860 4th, San Bernardino | 2089 Palm Beach Way, San Jose | 35 Malibu, Laguna Niguel |
-| **Living Area** | 456 sq ft | 1,020 sq ft | 2,629 sq ft |
-| **Beds / Baths** | 1 / 1 | 3 / 2 | 4 / 3 |
-| **Lot Size** | 11,000 sq ft | 5,200 sq ft | 9,100 sq ft |
-| **Year Built** | 1930 | 1960 | 1987 |
-| **ZIP Code** | 92410 | 95122 | 92677 |
-| **Actual Price** | $245,000 | $851,000 | $2,250,000 |
-| **Predicted Price** | $276,695 | $$851,047 | $2,144,243 |
+From the directory containing app.py, run:
+
+`streamlit run app.py`
+
+Streamlit will provide a local URL where the prediction application can be opened in a web browser.
+
+---
+
+## How to Run the Project
+
+1. Clone the Repository
+  - Clone the project repository and navigate to the project directory.
+
+2. Install Dependencies
+  - Install the Python libraries used by the project:
+
+`pip install pandas numpy scikit-learn xgboost joblib streamlit jupyter`
+
+3. Run the Notebooks
+
+The notebooks should be completed in the following order:
+
+1. 01_exploration.ipynb
+2. 02_preprocessing.ipynb
+3. 03_baseline_model.ipynb
+4. 04_model_comparison.ipynb
+5. 05_advanced_models.ipynb
+6. 06_evaluation.ipynb
+
+The notebooks progress from data exploration and preprocessing through model training, comparison, advanced modeling, and final evaluation.
+
