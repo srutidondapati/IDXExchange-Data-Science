@@ -14,8 +14,7 @@ def get_base64_image(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
-hero_img_b64 = get_base64_image("hero.jpg")
-
+hero_img_b64 = get_base64_image(BASE_DIR / "hero.jpg")
 
 # ==============================================================================
 # STYLE
