@@ -1,4 +1,4 @@
-# IDXExchange Project
+# Data Science Internship
 
 ## Project Overview:
 The IDXExchange project uses machine learning models to predict ClosePrice, the sale price of a single residential property in California.
