@@ -789,7 +789,6 @@ with tab_market:
             plot_bgcolor="white",
         )
         st.plotly_chart(fig_trend, use_container_width=True)
-        st.caption("Seven months of closed sales — a short window, so treat this as directional rather than seasonal.")
 
     st.write("")
 
@@ -826,7 +825,6 @@ with tab_market:
                 plot_bgcolor="white",
             )
             st.plotly_chart(fig_ppsf, use_container_width=True)
-        st.caption("Top and bottom 1% of values trimmed from both charts so a handful of outliers don't flatten the shape.")
 
     st.write("")
 
@@ -851,7 +849,6 @@ with tab_market:
             plot_bgcolor="white", yaxis_title="", xaxis_title="Homes sold",
         )
         st.plotly_chart(fig_city, use_container_width=True)
-        st.caption("Bar color still tracks price per square foot — a busy market isn't necessarily an expensive one.")
 
 # ==============================================================================
 # TAB 4: METHODOLOGY
