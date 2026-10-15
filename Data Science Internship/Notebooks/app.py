@@ -1031,7 +1031,8 @@ with tab_methodology:
 
         st.bar_chart(
             band_df.set_index('Price Band'),
-            color='#668B72'
+            color='#668B72',
+            sort = False
         )
 
         st.markdown("""
